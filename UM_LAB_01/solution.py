@@ -69,7 +69,10 @@ class OffPolicyNStepSarsaDriver(Driver):
             return_value = self._return_value(update_step)
             state_t = self.states[self._access_index(update_step)]
             action_t = self.actions[self._access_index(update_step)]
-            self.q[state_t, action_t] = None  # TODO: Tutaj trzeba zaktualizować tablicę wartościującą akcje Q
+            self.q[state_t, action_t] = \
+                self.q[state_t, action_t] + \
+                self.step_size * return_value_weight * \
+                (return_value - self.q[state_t, action_t]) # TODO: Tutaj trzeba zaktualizować tablicę wartościującą akcje Q
 
         if update_step == self.final_step - 1:
             self.finished = True
